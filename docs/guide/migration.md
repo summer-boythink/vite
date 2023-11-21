@@ -15,6 +15,8 @@ Vite is now using Rollup 4 which also brings along its breaking changes, in part
 
 Read the full breaking changes in [Rollup's release notes](https://github.com/rollup/rollup/releases/tag/v4.0.0) for build-related changes in [`build.rollupOptions`](/config/build-options.md#build-rollupoptions).
 
+If you are using TypeScript, make sure to set `moduleResolution: 'bundler'` (or `node16`/`nodenext`) as Rollup 4 requires it. Or you can set `skipLibCheck: true` instead.
+
 ## Deprecate CJS Node API
 
 The CJS Node API of Vite is deprecated. When calling `require('vite')`, a deprecation warning is now logged. You should update your files or frameworks to import the ESM build of Vite instead.
@@ -22,7 +24,7 @@ The CJS Node API of Vite is deprecated. When calling `require('vite')`, a deprec
 In a basic Vite project, make sure:
 
 1. The `vite.config.js` file content is using the ESM syntax.
-2. The closest `package.json` file has `"type": "module"`, or use the `.mjs` extension, e.g. `vite.config.mjs`.
+2. The closest `package.json` file has `"type": "module"`, or use the `.mjs`/`.mts` extension, e.g. `vite.config.mjs` or `vite.config.mts`.
 
 For other projects, there are a few general approaches:
 
@@ -207,6 +209,8 @@ There are some changes which only affect plugin/tool creators.
   - The `configurePreviewServer` hook now accepts the `PreviewServer` type instead of `PreviewServerForHook` type.
 - [[#14818] refactor(preview)!: use base middleware](https://github.com/vitejs/vite/pull/14818)
   - Middlewares added from the returned function in `configurePreviewServer` now does not have access to the `base` when comparing the `req.url` value. This aligns the behaviour with the dev server. You can check the `base` from the `configResolved` hook if needed.
+- [[#14834] fix(types)!: expose httpServer with Http2SecureServer union](https://github.com/vitejs/vite/pull/14834)
+  - `http.Server | http2.Http2SecureServer` is now used instead of `http.Server` where appropriate.
 
 Also there are other breaking changes which only affect few users.
 
